@@ -76,9 +76,11 @@ class SiteController extends Controller
     public function actionLink($link){
         $model = Link::findOne(['link' => $link]);
         if($model == null){
+            $dateTime = new DateTimeImmutable();
+            $dateTime->format('u');
             $model = new Link();
             $model->link = $link;
-            $model->short = Yii::$app->db->createCommand('select uuid_short()')->queryScalar();
+            $model->short = Yii::$app->db->createCommand($dateTime)->queryScalar();
             $model->save();
             return $model->short;
         }else{
